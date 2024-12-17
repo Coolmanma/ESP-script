@@ -1,0 +1,92 @@
+-- Services
+local replicatedstorage = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
+local teams = game:GetService("Teams")
+-- Variables
+local player = players.LocalPlayer
+
+while wait(0) do
+	for i,plr in pairs(players:GetPlayers()) do
+		if plr == player then
+
+		else
+			local char = plr.Character
+			if char.HumanoidRootPart:FindFirstChild("BillboardGui") then
+				-- Finding Each item inside of BillBoardGUI
+
+				local BillboardGUI = char.HumanoidRootPart.BillboardGui
+				local Frame = BillboardGUI.Frame
+				local PlayerText = Frame.PlayerName
+				local DistanceText = Frame.Distance
+				local TeamText = Frame.TeamName
+
+				-- Setting Gui Values To The Associated amount
+
+				PlayerText.Text = plr.Name
+				DistanceText.Text = tostring(math.floor((player.Character.HumanoidRootPart.Position - char.HumanoidRootPart.Position).Magnitude)) .. " Studs Away"
+				TeamText.Text = tostring(plr.Team)
+				TeamText.TextColor = plr.TeamColor
+			else
+				-- GUI Creation
+
+				local BillboardGUI = Instance.new("BillboardGui", char.HumanoidRootPart)
+				BillboardGUI.AlwaysOnTop = true
+				BillboardGUI.Size = UDim2.new(0,200,0,50)
+				BillboardGUI.StudsOffset = Vector3.new(0,3,0)
+
+				local Frame = Instance.new("Frame", BillboardGUI)
+				Frame.BackgroundTransparency = 0.8
+				Frame.Size = UDim2.new(1,0,1,0)
+				Frame.BackgroundColor3 = Color3.new(0.54902, 0.54902, 0.54902)
+
+				local PlayerNameText = Instance.new("TextLabel", Frame)
+				PlayerNameText.Size = UDim2.new(1,0,0.25,0)
+				PlayerNameText.Position = UDim2.new(0,0,0.5,0)
+				PlayerNameText.Name = "PlayerName"
+				PlayerNameText.BackgroundTransparency = 1
+				PlayerNameText.Text = plr.Name
+				PlayerNameText.TextColor = plr.TeamColor
+				PlayerNameText.TextStrokeTransparency = 0
+				PlayerNameText.TextScaled = true
+
+				local DistanceText = Instance.new("TextLabel", Frame)
+				DistanceText.Size = UDim2.new(1,0,0.5,0)
+				DistanceText.Position = UDim2.new(0,0,0,0)
+				DistanceText.Name = "Distance"
+				DistanceText.BackgroundTransparency = 1
+				DistanceText.TextStrokeTransparency = 0
+				DistanceText.TextScaled = true
+
+				local TeamText = Instance.new("TextLabel", Frame)
+				TeamText.Size = UDim2.new(1,0,0.25,0)
+				TeamText.Position = UDim2.new(0,0,0.75,0)
+				TeamText.Name = "TeamName"
+				TeamText.BackgroundTransparency = 1
+				TeamText.TextColor = plr.TeamColor
+				TeamText.Text = tostring(plr.Team)
+				TeamText.TextStrokeTransparency = 0
+				TeamText.TextScaled = true
+			end
+			if char.LowerTorso:FindFirstChild("ESPOBJ") then
+
+			else
+				for v,part in pairs(char:GetChildren()) do
+					print("Part Found")
+					if part.Name == "HumanoidRootPart" then
+						print("HumanoidRootPart")
+					else
+						if part:IsA("Accessory") then
+							local highlight = Instance.new("Highlight", part.Handle)
+							highlight.Name = "ESPOBJ"
+							highlight.FillColor = plr.TeamColor.Color
+						elseif part:IsA("MeshPart") or part:IsA("Part") then
+							local highlight = Instance.new("Highlight", part)
+							highlight.Name = "ESPOBJ"
+							highlight.FillColor = plr.TeamColor.Color
+						end
+					end
+				end
+			end
+		end		
+	end
+end
